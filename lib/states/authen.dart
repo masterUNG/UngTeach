@@ -12,26 +12,43 @@ class _AuthenState extends State<Authen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            buildLogo(),
-            buildAppName(),
-            buildUser(),
-            buildPassword(),
-            Container(margin: EdgeInsets.only(top: 16),
-              width: 250,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text('Login'),
+      floatingActionButton: buildTextButton(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white, MyStyle().darkColor],begin: Alignment(0.5,0),end: Alignment(0.5, 1),
+          ),
+          // gradient: RadialGradient(radius: 1.0,
+          //   colors: [Colors.white, MyStyle().darkColor],
+          // ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              buildLogo(),
+              buildAppName(),
+              buildUser(),
+              buildPassword(),
+              Container(
+                margin: EdgeInsets.only(top: 16),
+                width: 250,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Login'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+
+  TextButton buildTextButton() => TextButton(
+        onPressed: () => Navigator.pushNamed(context, '/register'),
+        child: Text('New Register'),
+      );
 
   Container buildUser() {
     return Container(
