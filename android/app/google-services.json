@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "589176249980",
+    "project_id": "ungteach",
+    "storage_bucket": "ungteach.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589176249980:android:c5c9662f942fb1aae573f9",
+        "android_client_info": {
+          "package_name": "com.flutterthailand.ungteach"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589176249980-hhsu0ocaublc9ou2b3q5sgu6dt3q2qfq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMi0FD5zYj82AzrAUSpF0cH1XeOsRYnWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589176249980-hhsu0ocaublc9ou2b3q5sgu6dt3q2qfq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
