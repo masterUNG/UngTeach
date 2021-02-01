@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "589176249980-m48c8iq87af2pmcut0ttsdd4nae765l2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flutterthailand.ungteach",
+            "certificate_hash": "99f1de59cbbb9f0ab27aeb63c596235bc843b92a"
+          }
+        },
+        {
           "client_id": "589176249980-hhsu0ocaublc9ou2b3q5sgu6dt3q2qfq.apps.googleusercontent.com",
           "client_type": 3
         }

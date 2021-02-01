@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ungteach/states/show_listvideo.dart';
 
 class MyService extends StatefulWidget {
@@ -40,9 +41,10 @@ class _MyServiceState extends State<MyService> {
               icon: Icon(Icons.exit_to_app_rounded),
               onPressed: () async {
                 await Firebase.initializeApp().then((value) async {
-                  await FirebaseAuth.instance.signOut().then((value) =>
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/authen', (route) => false));
+                  // await FirebaseAuth.instance.signOut().then((value) =>
+                  //     Navigator.pushNamedAndRemoveUntil(
+                  //         context, '/authen', (route) => false));
+                          await GoogleSignIn().signOut().then((value) => print('googleSign In SignOut Success'));
                 });
               })
         ],

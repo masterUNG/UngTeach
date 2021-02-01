@@ -83,16 +83,20 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            buildName(),
-            buildUser(),
-            buildPassword(),
-            buildRegister(),
-          ],
-        ),
+      body: Stack(
+        children: [MyStyle().buildBackGround(context),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                buildName(),
+                buildUser(),
+                buildPassword(),
+                buildRegister(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

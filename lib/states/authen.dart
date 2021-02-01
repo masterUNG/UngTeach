@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:ungteach/utility/background.dart';
 import 'package:ungteach/utility/dialog.dart';
 import 'package:ungteach/utility/my_style.dart';
 
@@ -17,32 +21,63 @@ class _AuthenState extends State<Authen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: buildTextButton(),
-      body: Container(
-        decoration: BoxDecoration(
-          // gradient: LinearGradient(
-          //   colors: [Colors.white, MyStyle().darkColor, ],
-          //   begin: Alignment(0.5, 0),
-          //   end: Alignment(0.5, 0.7),
-          // ),
-          gradient: RadialGradient(
-            radius: 1.0,
-            colors: [Colors.white, MyStyle().darkColor],
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              buildLogo(),
-              buildAppName(),
-              buildUser(),
-              buildPassword(),
-              buildLogin(),
-            ],
-          ),
-        ),
+      body: Stack(
+        children: [
+          MyStyle().buildBackGround(context),
+          buildMainContent(),
+        ],
       ),
     );
+  }
+
+  
+
+  Row buildMainContent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildLogo(),
+            buildAppName(),
+            buildUser(),
+            buildPassword(),
+            buildLogin(),
+            buildSignWithGmail(),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Container buildSignWithGmail() {
+    return Container(
+      width: 250,
+      child: SignInButton(
+        Buttons.GoogleDark,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        onPressed: () => signWithGmail(),
+      ),
+    );
+  }
+
+  Future<Null> signWithGmail() async {
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+
+    await Firebase.initializeApp().then((value) async {
+      await _googleSignIn.signIn().then((value) {
+        print('Google SignIn Success');
+        Navigator.pushNamed(context, '/myService');
+      });
+    });
   }
 
   Container buildLogin() {
@@ -148,7 +183,8 @@ class _AuthenState extends State<Authen> {
     await Firebase.initializeApp().then((value) async {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: user, password: password)
-          .then((value) => Navigator.pushNamedAndRemoveUntil(context, '/myService', (route) => false))
+          .then((value) => Navigator.pushNamedAndRemoveUntil(
+              context, '/myService', (route) => false))
           .catchError((value) {
         normalDialog(context, value.message);
       });
