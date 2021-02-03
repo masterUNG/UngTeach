@@ -30,8 +30,6 @@ class _AuthenState extends State<Authen> {
     );
   }
 
-  
-
   Row buildMainContent() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -65,17 +63,27 @@ class _AuthenState extends State<Authen> {
   }
 
   Future<Null> signWithGmail() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
     GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: [
         'email',
         'https://www.googleapis.com/auth/contacts.readonly',
       ],
     );
-
     await Firebase.initializeApp().then((value) async {
-      await _googleSignIn.signIn().then((value) {
-        print('Google SignIn Success');
-        Navigator.pushNamed(context, '/myService');
+      await _googleSignIn.signIn().then((googleSignInAccount) async {
+        await googleSignInAccount.authentication
+            .then((googleSignInAuthentication) async {
+          AuthCredential authCredential = GoogleAuthProvider.credential(
+            idToken: googleSignInAuthentication.idToken,
+            accessToken: googleSignInAuthentication.accessToken,
+          );
+          await auth.signInWithCredential(authCredential).then((authResult) {
+            print('authResult user ==> ${authResult.user}');
+            Navigator.pushNamed(context, '/myService');
+          });
+        });
+        
       });
     });
   }

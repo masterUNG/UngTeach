@@ -41,10 +41,9 @@ class _MyServiceState extends State<MyService> {
               icon: Icon(Icons.exit_to_app_rounded),
               onPressed: () async {
                 await Firebase.initializeApp().then((value) async {
-                  // await FirebaseAuth.instance.signOut().then((value) =>
-                  //     Navigator.pushNamedAndRemoveUntil(
-                  //         context, '/authen', (route) => false));
-                          await GoogleSignIn().signOut().then((value) => print('googleSign In SignOut Success'));
+                  await FirebaseAuth.instance.signOut().then((value) =>
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/authen', (route) => false));
                 });
               })
         ],
