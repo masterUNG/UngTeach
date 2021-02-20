@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ungteach/router.dart';
+import 'package:ungteach/utility/my_style.dart';
 
 String initialRoute = '/authen';
 
@@ -21,7 +22,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.brown),
+      theme: ThemeData(
+        primarySwatch: Colors.brown,
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: TextStyle(color: MyStyle().darkColor),
+        ),
+      ),
       routes: routes,
       initialRoute: initialRoute,
     );
