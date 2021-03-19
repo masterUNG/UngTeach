@@ -37,6 +37,13 @@
             {
               "client_id": "589176249980-hhsu0ocaublc9ou2b3q5sgu6dt3q2qfq.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "589176249980-im81a7ene58so6fgma0gcssv66e2vv9a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flutterthailand.ungteach"
+              }
             }
           ]
         }

@@ -4,10 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:ungteach/utility/background.dart';
+
 import 'package:ungteach/utility/dialog.dart';
 import 'package:ungteach/utility/my_style.dart';
 import 'package:http/http.dart' as http;
@@ -76,16 +77,40 @@ class _AuthenState extends State<Authen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        onPressed: () => singWithFacebook(),
+        onPressed: () => singWithFackbookFirebase(),
       ),
     );
   }
 
-  final FacebookLogin facebookLogin = FacebookLogin();
+  Future<Null> singWithFackbookFirebase() async {
+    FacebookLogin facebookLogin = FacebookLogin();
+    await facebookLogin.logInWithReadPermissions(['email', "public_profile"]).then((value) async {
+      String token = value.accessToken.token;
+      print('### Token facebook ==>> $token ###');
+      await Firebase.initializeApp().then((value) async {
+        final graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+        final profile = json.decode(graphResponse.body);
+        print('######### profile ==> $profile');
+
+        AuthCredential authCredential = FacebookAuthProvider.credential(token);
+
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithCredential(authCredential);
+        String nameLogin = userCredential.user.displayName;
+        print('################## nameLogin = $nameLogin ################# \n ######################');
+
+        // await FirebaseAuth.instance
+        //     .signInWithCredential(authCredential)
+        //     .then((value) => print('############### value token Success ##############'));
+      });
+    });
+  }
 
   Future<Null> singWithFacebook() async {
+    final FacebookLogin facebookLogin = FacebookLogin();
     print('SingWithFacebook');
-    final result = await facebookLogin.logIn(['email']);
+    final result = await facebookLogin.logInWithReadPermissions(['email']);
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         final String token = result.accessToken.token;
@@ -93,9 +118,7 @@ class _AuthenState extends State<Authen> {
             'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
         final profile = json.decode(graphResponse.body);
         print('######### profile ==> $profile');
-        await Firebase.initializeApp().then((value) async {
-          
-        });
+        await Firebase.initializeApp().then((value) async {});
         break;
       default:
     }
@@ -150,8 +173,12 @@ class _AuthenState extends State<Authen> {
             idToken: googleSignInAuthentication.idToken,
             accessToken: googleSignInAuthentication.accessToken,
           );
+
           await auth.signInWithCredential(authCredential).then((authResult) {
-            print('authResult user ==> ${authResult.user}');
+            print(
+                '################### authResult user ==> ${authResult.user} ##################');
+            String uid = authResult.user.uid;
+            print('uid === $uid');
             Navigator.pushNamed(context, '/myService');
           });
         });
