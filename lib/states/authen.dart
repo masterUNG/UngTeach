@@ -50,10 +50,29 @@ class _AuthenState extends State<Authen> {
             buildSignWithGmail(),
             buildSignWithFacebook(),
             buildSignWithAppleId(),
+            buildElevatedButton(),
           ],
         ),
       ],
     );
+  }
+
+  ElevatedButton buildElevatedButton() =>
+      ElevatedButton(onPressed: () => testPhone(), child: Text('Sign Phone'));
+
+  Future<Null> testPhone() async {
+    await Firebase.initializeApp().then((value) async {
+      print('######### initilalize OK ##########');
+      await FirebaseAuth.instance
+          .verifyPhoneNumber(
+            phoneNumber: '+66 81 859 5309',
+            verificationCompleted: (phoneAuthCredential) {},
+            verificationFailed: (error) {},
+            codeSent: (verificationId, forceResendingToken) {},
+            codeAutoRetrievalTimeout: (verificationId) {},
+          )
+          .then((value) => print('######### Sent OK ##########'));
+    });
   }
 
   Container buildSignWithGmail() {
@@ -84,7 +103,8 @@ class _AuthenState extends State<Authen> {
 
   Future<Null> singWithFackbookFirebase() async {
     FacebookLogin facebookLogin = FacebookLogin();
-    await facebookLogin.logInWithReadPermissions(['email', "public_profile"]).then((value) async {
+    await facebookLogin.logInWithReadPermissions(
+        ['email', "public_profile"]).then((value) async {
       String token = value.accessToken.token;
       print('### Token facebook ==>> $token ###');
       await Firebase.initializeApp().then((value) async {
@@ -98,7 +118,8 @@ class _AuthenState extends State<Authen> {
         final UserCredential userCredential =
             await FirebaseAuth.instance.signInWithCredential(authCredential);
         String nameLogin = userCredential.user.displayName;
-        print('################## nameLogin = $nameLogin ################# \n ######################');
+        print(
+            '################## nameLogin = $nameLogin ################# \n ######################');
 
         // await FirebaseAuth.instance
         //     .signInWithCredential(authCredential)
