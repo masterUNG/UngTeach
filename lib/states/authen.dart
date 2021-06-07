@@ -108,8 +108,10 @@ class _AuthenState extends State<Authen> {
       String token = value.accessToken.token;
       print('### Token facebook ==>> $token ###');
       await Firebase.initializeApp().then((value) async {
-        final graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+        Uri uri = Uri(
+            path:
+                'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+        final graphResponse = await http.get(uri);
         final profile = json.decode(graphResponse.body);
         print('######### profile ==> $profile');
 
@@ -135,8 +137,10 @@ class _AuthenState extends State<Authen> {
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         final String token = result.accessToken.token;
-        final graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+        Uri uri = Uri(
+            path:
+                'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+        final graphResponse = await http.get(uri);
         final profile = json.decode(graphResponse.body);
         print('######### profile ==> $profile');
         await Firebase.initializeApp().then((value) async {});

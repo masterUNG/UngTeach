@@ -27,14 +27,16 @@ class _MyServiceState extends State<MyService> {
     await Firebase.initializeApp().then((value) async {
       await FirebaseAuth.instance.authStateChanges().listen((event) async {
         String uid = event.uid;
-        FirebaseMessaging messaging = FirebaseMessaging();
+        FirebaseMessaging messaging;
         String token = await messaging.getToken();
         DateTime dateTimeLogin = DateTime.now();
         Timestamp timestamp = Timestamp.fromDate(dateTimeLogin);
         TokenModel model = TokenModel(token: token, timestampLogin: timestamp);
         await FirebaseFirestore.instance
             .collection('token')
-            .doc(uid).collection('login').doc()
+            .doc(uid)
+            .collection('login')
+            .doc()
             .set(model.toMap())
             .then((value) => print('Token ==> $token'));
       });
